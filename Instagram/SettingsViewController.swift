@@ -16,6 +16,8 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         
         userLabel.text = Auth.auth().currentUser?.email
+        overrideUserInterfaceStyle = .light
+
 
     }
     

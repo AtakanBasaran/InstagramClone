@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		BB43FD2F2AB226C900CBBA8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB43FD2E2AB226C900CBBA8C /* AppDelegate.swift */; };
 		BB43FD312AB226C900CBBA8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB43FD302AB226C900CBBA8C /* SceneDelegate.swift */; };
-		BB43FD332AB226C900CBBA8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB43FD322AB226C900CBBA8C /* ViewController.swift */; };
+		BB43FD332AB226C900CBBA8C /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB43FD322AB226C900CBBA8C /* SignViewController.swift */; };
 		BB43FD362AB226C900CBBA8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB43FD342AB226C900CBBA8C /* Main.storyboard */; };
 		BB43FD382AB226CB00CBBA8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB43FD372AB226CB00CBBA8C /* Assets.xcassets */; };
 		BB43FD3B2AB226CB00CBBA8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB43FD392AB226CB00CBBA8C /* LaunchScreen.storyboard */; };
@@ -33,7 +33,7 @@
 		BB43FD2B2AB226C900CBBA8C /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB43FD2E2AB226C900CBBA8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB43FD302AB226C900CBBA8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BB43FD322AB226C900CBBA8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BB43FD322AB226C900CBBA8C /* SignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
 		BB43FD352AB226C900CBBA8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BB43FD372AB226CB00CBBA8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB43FD3A2AB226CB00CBBA8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 				BB79DF1B2ADEB35A004F62E3 /* Model */,
 				BB79DF1A2ADEB33B004F62E3 /* Delegate */,
 				BB43FD532AB27EB200CBBA8C /* FeedCell.swift */,
-				BB43FD322AB226C900CBBA8C /* ViewController.swift */,
+				BB43FD322AB226C900CBBA8C /* SignViewController.swift */,
 				BB43FD492AB228DF00CBBA8C /* FeedViewController.swift */,
 				BB43FD4D2AB229A500CBBA8C /* UploadViewController.swift */,
 				BB43FD4B2AB228F900CBBA8C /* SettingsViewController.swift */,
@@ -205,7 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB43FD542AB27EB200CBBA8C /* FeedCell.swift in Sources */,
-				BB43FD332AB226C900CBBA8C /* ViewController.swift in Sources */,
+				BB43FD332AB226C900CBBA8C /* SignViewController.swift in Sources */,
 				BB43FD4E2AB229A500CBBA8C /* UploadViewController.swift in Sources */,
 				BB43FD592AB3A45500CBBA8C /* Post.swift in Sources */,
 				BB43FD2F2AB226C900CBBA8C /* AppDelegate.swift in Sources */,

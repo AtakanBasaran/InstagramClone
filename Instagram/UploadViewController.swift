@@ -21,10 +21,11 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
     var imageArray = [UIImage]()
     var imageUrlArray = [String]()
     var inputSources: [InputSource] = []
-
+    var LikedBy = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        overrideUserInterfaceStyle = .light
         
         ButtonUpload.isEnabled = false
         
@@ -78,7 +79,7 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
 
     func uploadToFirestore() {
         let firestoreDatabase = Firestore.firestore()
-        let firestorePost = ["ImageUrlArray": self.imageUrlArray, "Comment": self.CommentTextField.text, "Email": Auth.auth().currentUser!.email, "Date": FieldValue.serverTimestamp(), "Likes": 0] as [String: Any]
+        let firestorePost = ["ImageUrlArray": self.imageUrlArray, "Comment": self.CommentTextField.text, "Email": Auth.auth().currentUser!.email, "Date": FieldValue.serverTimestamp(), "Likes": 0, "LikedBy": LikedBy] as [String: Any]
 
         firestoreDatabase.collection("Post").addDocument(data: firestorePost) { error in
             if error != nil {

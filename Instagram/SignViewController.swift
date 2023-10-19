@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class ViewController: UIViewController {
+class SignViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
         
@@ -16,11 +16,18 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        overrideUserInterfaceStyle = .light
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeKeyboard))
+        view.addGestureRecognizer(gestureRecognizer)
     }
     
     
+    @objc func closeKeyboard() {
+        view.endEditing(true)
+    }
     
-
     @IBAction func SignInButton(_ sender: Any) {
         
         if emailTextField.text != "" && passwordTextField.text != "" { //email ve password boş kalmasın

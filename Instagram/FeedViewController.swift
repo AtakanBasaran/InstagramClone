@@ -17,9 +17,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var TableView: UITableView!
     
-   /* var EmailSeries = [String]()
-    var commentSeries = [String]()
-    var imageSeries = [String]() */
     
     var postSeries = [Post]() //Oluşturduğum post classı elemanlarını tutucağım bir dizi oluşturdum
     var documentIDs = [String]() //Document IDlerin olduğu bir string dizisi oluşturduk
@@ -32,7 +29,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         TableView.dataSource = self
         TableView.separatorColor = .purple
         firebaseGetData()
+        
+        overrideUserInterfaceStyle = .light
     }
+    
+    
     
     func firebaseGetData(){
          
@@ -88,7 +89,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.commentText.text = postSeries[indexPath.row].comment
         cell.LikeText.text = String(postSeries[indexPath.row].likes)
         cell.documentIdLabel.text = documentIDs[indexPath.row] //Like butonuna bastığımızda hangi fotonun IDsini aldığımızı buraya atıyoruz
-        cell.loadLikeState()
+        cell.loadLikeState(postID: cell.documentIdLabel.text!, email: Auth.auth().currentUser!.email!)
         
         if postSeries[indexPath.row].email != Auth.auth().currentUser?.email {
             cell.ButtonDelete.isHidden = true

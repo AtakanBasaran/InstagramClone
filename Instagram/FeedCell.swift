@@ -19,7 +19,8 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
     @IBOutlet weak var LikeText: UILabel!
     @IBOutlet weak var documentIdLabel: UILabel! //hidden yaptık user documentIDleri göremicek ama biz indexPath.row ile her fotonun IDsine erişicez
     
-    
+    let firestoreDatabase = Firestore.firestore()
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,64 +31,75 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
     }
 
     @IBAction func LikeButton(_ sender: UIButton) {
-        let defaults = UserDefaults.standard
+        
         let postID = documentIdLabel.text!
+        guard let email = Auth.auth().currentUser?.email  else {return}
         
-        // Check if the post is liked or not based on UserDefaults
-        let isLiked = defaults.array(forKey: "likedPosts") as? [String] ?? []
-        let liked = isLiked.contains(postID)
-        
-        if liked {
-            sender.setImage(UIImage(named: "heartempty"), for: .normal)
-            sender.isSelected = false
-            removeFromLikedPosts(postID)
-            updateLikeCount(increment: -1)
-        } else {
-            sender.setImage(UIImage(named: "heart12"), for: .normal)
-            sender.isSelected = true
-            addToLikedPosts(postID)
-            updateLikeCount(increment: 1)
+        let postRef = firestoreDatabase.collection("Post").document(postID)
+        postRef.getDocument{ document, error in
+            
+            if error == nil {
+                if let document = document, document.exists {
+                    var likedBy = document.data()?["LikedBy"] as? [String] ?? []
+                    
+                    if likedBy.contains(email) {
+                        likedBy.removeAll {$0 == email}
+                        self.ButtonLike.isSelected = false
+                        self.ButtonLike.setImage(UIImage(named: "heartempty"), for: .normal)
+                        self.ButtonLike.tintColor = .white
+                        self.updateLikeCount(increment: -1)
+                        
+                    } else {
+                        likedBy.append(email)
+                        self.ButtonLike.isSelected = true
+                        self.ButtonLike.setImage(UIImage(named: "heart12"), for: .normal)
+                        self.ButtonLike.tintColor = .white
+                        self.updateLikeCount(increment: 1)
+                    }
+                    postRef.updateData(["LikedBy": likedBy])
+                } else {
+                    print("no document")
+                }
+            }
         }
-        sender.tintColor = .white
     }
 
     
-    func removeFromLikedPosts(_ postID: String) {
-        var likedPosts = UserDefaults.standard.array(forKey: "likedPosts") as? [String] ?? []
-        likedPosts.removeAll { $0 == postID }
-        UserDefaults.standard.set(likedPosts, forKey: "likedPosts")
-        }
-    
-    
-    func addToLikedPosts(_ postID: String) {
-        var likedPosts = UserDefaults.standard.array(forKey: "likedPosts") as? [String] ?? []
-        likedPosts.append(postID)
-        UserDefaults.standard.set(likedPosts, forKey: "likedPosts")
-        }
     
     func updateLikeCount(increment: Int) {
-        let fireStoreDatabase = Firestore.firestore()
         if let likeCount = Int(LikeText.text!) {
             let newLikeCount = likeCount + increment
             let likeStore = ["Likes": newLikeCount] as [String: Any]
-            fireStoreDatabase.collection("Post").document(documentIdLabel.text!).setData(likeStore, merge: true)
+            firestoreDatabase.collection("Post").document(documentIdLabel.text!).setData(likeStore, merge: true)
             LikeText.text = String(newLikeCount)
             }
         }
     
-    func loadLikeState() {
-        let defaults = UserDefaults.standard
-        let postID = documentIdLabel.text!
-
-        if let likedPosts = defaults.array(forKey: "likedPosts") as? [String], likedPosts.contains(postID) {
-            ButtonLike.isSelected = true
-            ButtonLike.setImage(UIImage(named: "heart12"), for: .normal)
-            ButtonLike.tintColor = .white
-        } else {
-            ButtonLike.isSelected = false
-            ButtonLike.setImage(UIImage(named: "heartempty"), for: .normal)
-            ButtonLike.tintColor = .white
+    func loadLikeState(postID: String, email: String) {
+        
+        let postRef = firestoreDatabase.collection("Post").document(postID)
+        postRef.getDocument{ document, error in
+            
+            if error == nil {
+                if let document = document, document.exists {
+                    var likedBy = document.data()?["LikedBy"] as? [String] ?? []
+                    
+                    if likedBy.contains(email) {
+                        self.ButtonLike.isSelected = true
+                        self.ButtonLike.setImage(UIImage(named: "heart12"), for: .normal)
+                        self.ButtonLike.tintColor = .white
+                        
+                    } else {
+                        self.ButtonLike.isSelected = false
+                        self.ButtonLike.setImage(UIImage(named: "heartempty"), for: .normal)
+                        self.ButtonLike.tintColor = .white
+                    }
+                } else {
+                    print("no document")
+                }
+            }
         }
+        
     }
 
     
