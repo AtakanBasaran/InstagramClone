@@ -20,6 +20,7 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
     @IBOutlet weak var documentIdLabel: UILabel! //hidden yaptık user documentIDleri göremicek ama biz indexPath.row ile her fotonun IDsine erişicez
     
     let firestoreDatabase = Firestore.firestore()
+    var commentButtonAction: (() -> Void)?
 
     
     override func awakeFromNib() {
@@ -82,7 +83,7 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
             
             if error == nil {
                 if let document = document, document.exists {
-                    var likedBy = document.data()?["LikedBy"] as? [String] ?? []
+                    let likedBy = document.data()?["LikedBy"] as? [String] ?? []
                     
                     if likedBy.contains(email) {
                         self.ButtonLike.isSelected = true
@@ -103,7 +104,8 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
     }
 
     
-    @IBAction func CommentButton(_ sender: Any) {
+    @IBAction func CommentButton(_ sender: Any) {        
+        commentButtonAction?()
     }
     
     

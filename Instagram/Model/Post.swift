@@ -17,3 +17,10 @@ struct Post {
     var likes : Int
 
 }
+
+struct Comment {
+    
+    var text: String
+    var user: String
+    
+}

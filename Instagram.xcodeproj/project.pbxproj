@@ -27,6 +27,7 @@
 		BB79DF152ADCA57E004F62E3 /* ImageSlideshow/Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BB79DF142ADCA57E004F62E3 /* ImageSlideshow/Alamofire */; };
 		BB79DF172ADCA57E004F62E3 /* ImageSlideshow/Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = BB79DF162ADCA57E004F62E3 /* ImageSlideshow/Kingfisher */; };
 		BB79DF192ADCA57E004F62E3 /* ImageSlideshow/SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = BB79DF182ADCA57E004F62E3 /* ImageSlideshow/SDWebImage */; };
+		BB79DF1D2AE14A02004F62E3 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79DF1C2AE14A02004F62E3 /* CommentViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		BB43FD512AB234C400CBBA8C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BB43FD532AB27EB200CBBA8C /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		BB43FD582AB3A45500CBBA8C /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		BB79DF1C2AE14A02004F62E3 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				BB43FD532AB27EB200CBBA8C /* FeedCell.swift */,
 				BB43FD322AB226C900CBBA8C /* SignViewController.swift */,
 				BB43FD492AB228DF00CBBA8C /* FeedViewController.swift */,
+				BB79DF1C2AE14A02004F62E3 /* CommentViewController.swift */,
 				BB43FD4D2AB229A500CBBA8C /* UploadViewController.swift */,
 				BB43FD4B2AB228F900CBBA8C /* SettingsViewController.swift */,
 				BB43FD342AB226C900CBBA8C /* Main.storyboard */,
@@ -212,6 +215,7 @@
 				BB43FD4A2AB228DF00CBBA8C /* FeedViewController.swift in Sources */,
 				BB43FD4C2AB228F900CBBA8C /* SettingsViewController.swift in Sources */,
 				BB43FD312AB226C900CBBA8C /* SceneDelegate.swift in Sources */,
+				BB79DF1D2AE14A02004F62E3 /* CommentViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

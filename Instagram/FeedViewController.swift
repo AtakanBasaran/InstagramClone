@@ -20,8 +20,12 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var postSeries = [Post]() //Oluşturduğum post classı elemanlarını tutucağım bir dizi oluşturdum
     var documentIDs = [String]() //Document IDlerin olduğu bir string dizisi oluşturduk
-    
+    var selectedPostID = String()
     var inputArray : [KingfisherSource] = []
+    var PostComments = [String]()
+
+    
+    let firestoreDatabase = Firestore.firestore()
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +41,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func firebaseGetData(){
          
-        let firestoreDatabase = Firestore.firestore()
+        
         //firestoreDatabase.collection("Post").whereField(<#T##field: String##String#>, isEqualTo: <#T##Any#>) ->Post collectionumuzda hangi fieldi seçebileceğimizi filtreliyebiliyoruz
             
         firestoreDatabase.collection("Post").order(by: "Date", descending: true) //istediğimiz gibi orderlayabiliyoruz.
@@ -91,6 +95,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.documentIdLabel.text = documentIDs[indexPath.row] //Like butonuna bastığımızda hangi fotonun IDsini aldığımızı buraya atıyoruz
         cell.loadLikeState(postID: cell.documentIdLabel.text!, email: Auth.auth().currentUser!.email!)
         
+        
+        
         if postSeries[indexPath.row].email != Auth.auth().currentUser?.email {
             cell.ButtonDelete.isHidden = true
         } else {
@@ -98,8 +104,9 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         
+        
+        
         let imageSlideShow = ImageSlideshow(frame: CGRect(x: cell.contentView.bounds.width / 150 , y: cell.contentView.frame.height * 0.2, width: cell.contentView.frame.width , height: cell.contentView.bounds.height * 0.6 ))
-        print(cell.contentView.frame.width)
         imageSlideShow.backgroundColor = UIColor.white
 
         let pageIndicator = UIPageControl()
@@ -126,8 +133,42 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 imageSlideShow.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
                 imageSlideShow.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
             ])
+        
+        cell.commentButtonAction = {
+            
+            let postID = self.documentIDs[indexPath.row]
+            if postID != "" {
+                self.firestoreDatabase.collection("Post").document(postID).getDocument { document, error in
+                    
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        if let document = document, document.exists {
+                            self.PostComments = document.data()?["PostComment"] as? [String] ?? []
+                            self.selectedPostID = postID
+                            print("PostComments: \(self.PostComments)")
+                            self.performSegue(withIdentifier: "toCommentVC", sender: nil)
+                        } else {
+                            print("document does not exist")
+                        }
+                    }
+                }
+            } else {
+                print("postID error")
+            }
+            
+        }
+
 
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCommentVC" {
+            let destinationVC = segue.destination as! CommentViewController
+            destinationVC.comments = PostComments
+            destinationVC.postID = selectedPostID
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

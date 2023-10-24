@@ -56,7 +56,6 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
                     if error == nil {
                         imageRef.downloadURL { url, error in
                             if error == nil, let imageUrl = url?.absoluteString {
-                                print(imageUrl)
                                 self.imageUrlArray.append(imageUrl)
                             }
                             dispatchGroup.leave()

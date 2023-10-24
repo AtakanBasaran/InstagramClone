@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -327,11 +327,63 @@
                     <tabBarItem key="tabBarItem" title="Feed" image="house" catalog="system" id="rsG-w7-60D"/>
                     <connections>
                         <outlet property="TableView" destination="hZM-D5-xJk" id="AwY-7D-3bg"/>
+                        <segue destination="up6-XQ-w2l" kind="show" identifier="toCommentVC" id="V2m-8Q-weh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCX-Hd-Nri" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="539.13043478260875" y="-383.70535714285711"/>
+        </scene>
+        <!--Comment View Controller-->
+        <scene sceneID="AnB-Da-Ij6">
+            <objects>
+                <viewController id="up6-XQ-w2l" customClass="CommentViewController" customModule="Instagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7Xf-vs-woT">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="922"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3th-Xz-Gtm">
+                                <rect key="frame" x="0.0" y="169" width="430" height="753"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Comment:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rz5-h3-bf0">
+                                <rect key="frame" x="20" y="74" width="390" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VZ-Hd-nj6">
+                                <rect key="frame" x="182" y="121" width="68" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Share"/>
+                                <connections>
+                                    <action selector="shareButton:" destination="up6-XQ-w2l" eventType="touchUpInside" id="oL8-Hv-5Iu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="YL1-sB-Oel"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Rz5-h3-bf0" firstAttribute="centerX" secondItem="3th-Xz-Gtm" secondAttribute="centerX" id="80c-kb-N7D"/>
+                            <constraint firstItem="Rz5-h3-bf0" firstAttribute="top" secondItem="YL1-sB-Oel" secondAttribute="top" constant="74" id="AlS-vU-30w"/>
+                            <constraint firstItem="Rz5-h3-bf0" firstAttribute="trailing" secondItem="7Xf-vs-woT" secondAttribute="trailingMargin" id="FFg-sa-Kyi"/>
+                            <constraint firstItem="3th-Xz-Gtm" firstAttribute="top" secondItem="5VZ-Hd-nj6" secondAttribute="bottom" constant="13" id="MYM-2Y-Qrp"/>
+                            <constraint firstItem="5VZ-Hd-nj6" firstAttribute="leading" secondItem="YL1-sB-Oel" secondAttribute="leading" constant="182" id="TBo-nP-Jc4"/>
+                            <constraint firstItem="Rz5-h3-bf0" firstAttribute="leading" secondItem="7Xf-vs-woT" secondAttribute="leadingMargin" id="jFs-FA-NOR"/>
+                            <constraint firstItem="5VZ-Hd-nj6" firstAttribute="top" secondItem="Rz5-h3-bf0" secondAttribute="bottom" constant="13" id="xcA-xZ-29K"/>
+                            <constraint firstItem="3th-Xz-Gtm" firstAttribute="leading" secondItem="YL1-sB-Oel" secondAttribute="leading" id="zO3-7w-EWG"/>
+                            <constraint firstItem="3th-Xz-Gtm" firstAttribute="bottom" secondItem="YL1-sB-Oel" secondAttribute="bottom" id="ze3-XT-sEj"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hVf-ct-vy7"/>
+                    <connections>
+                        <outlet property="buttonShare" destination="5VZ-Hd-nj6" id="ePm-lj-s46"/>
+                        <outlet property="postCommentText" destination="Rz5-h3-bf0" id="imG-WO-zbr"/>
+                        <outlet property="tableView" destination="3th-Xz-Gtm" id="I5K-gU-22b"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ttv-bc-W45" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1311.6279069767443" y="-375.32188841201719"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="UQv-hr-v8B">
