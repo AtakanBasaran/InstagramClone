@@ -38,8 +38,11 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         if let user = comments[indexPath.row]["user"] as? String, let comment = comments[indexPath.row]["comment"] as? String {
-            cell.textLabel?.numberOfLines = 2
-            cell.textLabel?.text = "\(user) \n\(comment)"
+            cell.textLabel?.numberOfLines = 4
+            
+            let featureText = NSMutableAttributedString(string: "\(user) \n\(comment)")
+            featureText.addAttributes([.font: UIFont.boldSystemFont(ofSize: 15)], range: NSRange(location: 0, length: user.count))
+            cell.textLabel?.attributedText = featureText
         }
         return cell
     }
