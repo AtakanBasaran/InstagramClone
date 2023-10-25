@@ -17,7 +17,7 @@ class SignViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        overrideUserInterfaceStyle = .light
+        overrideUserInterfaceStyle = .light //always light mode use
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeKeyboard))
         view.addGestureRecognizer(gestureRecognizer)
@@ -30,13 +30,13 @@ class SignViewController: UIViewController {
     
     @IBAction func SignInButton(_ sender: Any) {
         
-        if emailTextField.text != "" && passwordTextField.text != "" { //email ve password boş kalmasın
+        if emailTextField.text != "" && passwordTextField.text != "" {
             Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { authdataresult, error in
                 
                 if error != nil {
                     self.ErrorMessage(titleInput: "Error!", messageInput: error?.localizedDescription ?? "Error Please Try Again!") //Hata alırsak firebaseden gelen mesajı göster
                 } else {
-                    self.performSegue(withIdentifier: "toFeedVC", sender: nil) //closureların içinde self kullanmalıyız, hata almazsak performsegue yap, dışarda kullansaydık hatadan bağımsız diğer VCye geçicektik
+                    self.performSegue(withIdentifier: "toFeedVC", sender: nil)
                 }
             }
         } else {
@@ -47,9 +47,9 @@ class SignViewController: UIViewController {
     
     @IBAction func SignUpButton(_ sender: Any) {
         if emailTextField.text != "" && passwordTextField.text != "" {
-            Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authdataresult, error in //Firebase üzerinden kullanıcı oluşturma, bunu asenkronize şeklinde yapıyoruz sunucudan veri çektiğimiz için, sunucu hata veriyo ya da üyelik oluşturuyo ama cevabın ne zaman gelceğini bilmiyoruz o yüzden bu işlemler cod hızından yavaş olacağı için asenkron yapıyoruz ki arayüz kitlenmesin, kullanıcı işlemlerini yapmaya devam etsin bi yandan ise sunucudan cevap gelince ne yapacığımızı bilebilelim, completion -> tamamlanınca napayım
+            Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authdataresult, error in
                 if error != nil {
-                    self.ErrorMessage(titleInput: "Error!", messageInput: error?.localizedDescription ?? "Error, Please Try Again!") //closureların içinde self kullanmalıyız, error?.localizedDescription -> Kullanıcın anlayabilceği dilden gelen firebasein yolladığı hata mesajı, error?.localizedDescription ?? "Error! Please Try Again" -> eğer ilk kısım nil olursa ikinci kısmı yaz default olarak ekstra güvenlik
+                    self.ErrorMessage(titleInput: "Error!", messageInput: error?.localizedDescription ?? "Error, Please Try Again!")
                 } else {
                     self.performSegue(withIdentifier: "toFeedVC", sender: nil)
                 }
@@ -61,10 +61,10 @@ class SignViewController: UIViewController {
     
     
     func ErrorMessage(titleInput: String, messageInput: String) {
-        let alert = UIAlertController(title: titleInput, message: messageInput, preferredStyle: .alert) //alert oluştur, fonksiyonunda init yazılan kısmında ne yazıldıysa onu göstersin
-        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil) //ok butonu çıksın uyarıdan çıkması için
+        let alert = UIAlertController(title: titleInput, message: messageInput, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okButton)
-        self.present(alert, animated: true, completion: nil) //completion: nil -> tamamlanınca bi şey yapma, self kullanmamızın sebebi ilerde kullanıcağımız closurelarda karışıklık olmaması için
+        self.present(alert, animated: true, completion: nil)
     }
     
     

@@ -359,7 +359,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="SAb-Bj-r9z"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>

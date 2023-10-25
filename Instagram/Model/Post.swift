@@ -7,7 +7,7 @@
 
 import Foundation
 
-//Comment, imageUrl ve email için tek tek series oluşturup tek tek eklemek yerine class oluşturup tekte eklemem daha iyi bir yöntem -> Object oriented programming
+//Models for post and comment
 
 struct Post {
     

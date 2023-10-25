@@ -25,11 +25,16 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        print("postID: \(postID)")
-        print("comments: \(comments)")
+        overrideUserInterfaceStyle = .light
+        
+        let gestureRecognizerKey = UITapGestureRecognizer(target: self, action: #selector(CloseKeyboard))
+        view.addGestureRecognizer(gestureRecognizerKey)
         
     }
     
+    @objc func CloseKeyboard() {
+        view.endEditing(true)
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
@@ -38,13 +43,27 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         if let user = comments[indexPath.row]["user"] as? String, let comment = comments[indexPath.row]["comment"] as? String {
-            cell.textLabel?.numberOfLines = 4
+            cell.textLabel?.numberOfLines = 2
             
             let featureText = NSMutableAttributedString(string: "\(user) \n\(comment)")
             featureText.addAttributes([.font: UIFont.boldSystemFont(ofSize: 15)], range: NSRange(location: 0, length: user.count))
             cell.textLabel?.attributedText = featureText
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+            if let user = comments[indexPath.row]["user"] as? String {
+                if user == Auth.auth().currentUser?.email! {
+                    if editingStyle == .delete {
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                    }
+                    
+                }
+            }
+            
+        
     }
 
 
@@ -58,7 +77,7 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
             firestoreDatabase.collection("Post").document(postID).getDocument { document, error in
                 if error == nil {
                     if let document = document, document.exists {
-                        self.commentPost = document.data()?["PostComment"] as? [[String: Any]] ?? []
+                        self.commentPost = document.data()?["PostComment"] as? [[String: Any]] ?? [] //creating array including comment and its user
                         
                         let commentData : [String: Any] = [
                             "comment" : newComment.text,
@@ -69,7 +88,7 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
                         if let postComment = ["PostComment": self.commentPost] as? [String : Any] {
                             self.firestoreDatabase.collection("Post").document(self.postID).setData(postComment, merge: true)
                         }
-                        self.comments = self.commentPost
+                        self.comments = self.commentPost 
                         self.tableView.reloadData()
                     } else {
                         print("no document")
@@ -84,6 +103,8 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.errorMessage(title: "Error!", message: "Comment cannot be empty!")
         }
     }
+    
+    
     
 
     

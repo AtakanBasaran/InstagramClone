@@ -24,8 +24,8 @@ class SettingsViewController: UIViewController {
     @IBAction func LogOutButton(_ sender: Any) {
         
         do {
-            try Auth.auth().signOut() //İlk fonksiyonu yazarken throw gördük bu hata göster demek ve do catch yöntemiyle yap demek, sign out functionu
-            performSegue(withIdentifier: "toVC", sender: nil) //Çıkış yaptıktan sonra sign ekranına dön
+            try Auth.auth().signOut()
+            performSegue(withIdentifier: "toVC", sender: nil) //return sign in page
         } catch {
             print("Error!")
         }

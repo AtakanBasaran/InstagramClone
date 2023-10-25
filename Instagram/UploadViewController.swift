@@ -27,7 +27,7 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
         super.viewDidLoad()
         overrideUserInterfaceStyle = .light
         
-        ButtonUpload.isEnabled = false
+        ButtonUpload.isEnabled = false //cannot upload empty picture
         
         let gestureRecognizerKey = UITapGestureRecognizer(target: self, action: #selector(CloseKeyboard))
         view.addGestureRecognizer(gestureRecognizerKey)
@@ -83,7 +83,7 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
         firestoreDatabase.collection("Post").addDocument(data: firestorePost) { error in
             if error != nil {
                 self.ErrorMessage(titleIn: "Error!", messageIn: error?.localizedDescription ?? "Error!, Try Again Later")
-            } else {
+            } else { //Return initial condition
                 self.imageUrlArray.removeAll(keepingCapacity: false)
                 self.imageArray.removeAll(keepingCapacity: false)
                 self.inputSources.removeAll(keepingCapacity: false)
@@ -127,7 +127,7 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
             let dispatchGroup = DispatchGroup()
             
 
-            imageArray.removeAll(keepingCapacity: false)
+            imageArray.removeAll(keepingCapacity: false) //for not to upload last photos together with new photos
             inputSources.removeAll(keepingCapacity: false)
             
             for result in results {
@@ -152,6 +152,7 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
             dispatchGroup.notify(queue: DispatchQueue.main) {
                 // This block will be called when all asynchronous tasks are completed
 
+                //checking the selected photos before upload in image slide show
                 let imageSlideShow = ImageSlideshow(frame: CGRect(x: self.view.frame.width * 0.5 - self.view.frame.width * 0.35, y: self.view.frame.height * 0.08, width: self.view.frame.width * 0.7, height: self.view.frame.height * 0.3))
                 imageSlideShow.backgroundColor = UIColor.white
 

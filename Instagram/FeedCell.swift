@@ -10,14 +10,14 @@ import FirebaseFirestore
 import Firebase
 
 
-class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototypeı yönetmek için yeni bir VC açar gibi yeni dosya açtık
+class FeedCell: UITableViewCell { //Prototype cell for table view
     
     @IBOutlet weak var ButtonLike: UIButton!
     @IBOutlet weak var ButtonDelete: UIButton!
     @IBOutlet weak var emailText: UILabel!
     @IBOutlet weak var commentText: UILabel!    
     @IBOutlet weak var LikeText: UILabel!
-    @IBOutlet weak var documentIdLabel: UILabel! //hidden yaptık user documentIDleri göremicek ama biz indexPath.row ile her fotonun IDsine erişicez
+    @IBOutlet weak var documentIdLabel: UILabel!
     
     let firestoreDatabase = Firestore.firestore()
     var commentButtonAction: (() -> Void)?
@@ -31,7 +31,7 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
         super.setSelected(selected, animated: animated)
     }
 
-    @IBAction func LikeButton(_ sender: UIButton) {
+    @IBAction func LikeButton(_ sender: UIButton) { //like mechanism specific to user emails
         
         let postID = documentIdLabel.text!
         guard let email = Auth.auth().currentUser?.email  else {return}
@@ -76,7 +76,7 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
             }
         }
     
-    func loadLikeState(postID: String, email: String) {
+    func loadLikeState(postID: String, email: String) { //
         
         let postRef = firestoreDatabase.collection("Post").document(postID)
         postRef.getDocument{ document, error in
@@ -109,7 +109,7 @@ class FeedCell: UITableViewCell { //Table view içinde yaptığımız prototype�
     }
     
     
-    @IBAction func deleteButton(_ sender: Any) {
+    @IBAction func deleteButton(_ sender: Any) { //In home page users can delete their post
         
         let fireStoreDatabase = Firestore.firestore()
         
