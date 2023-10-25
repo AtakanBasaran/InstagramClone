@@ -22,7 +22,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     var documentIDs = [String]() //Document IDlerin olduğu bir string dizisi oluşturduk
     var selectedPostID = String()
     var inputArray : [KingfisherSource] = []
-    var PostComments = [String]()
+    var PostComments = [[String : Any]]()
 
     
     let firestoreDatabase = Firestore.firestore()
@@ -144,7 +144,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                         print(error.localizedDescription)
                     } else {
                         if let document = document, document.exists {
-                            self.PostComments = document.data()?["PostComment"] as? [String] ?? []
+                            self.PostComments = document.data()?["PostComment"] as? [[String: Any]] ?? []
                             self.selectedPostID = postID
                             print("PostComments: \(self.PostComments)")
                             self.performSegue(withIdentifier: "toCommentVC", sender: nil)

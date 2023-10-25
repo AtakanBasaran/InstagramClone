@@ -15,10 +15,9 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     let firestoreDatabase = Firestore.firestore()
-    var comments = [String]()
+    var comments = [[String: Any]]()
     var postID = String()
-    var commentPost = [String]()
-    var commentPostArray = [Comment]()
+    var commentPost = [[String: Any]]()
 
     
     
@@ -38,38 +37,49 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = comments[indexPath.row]
+        if let user = comments[indexPath.row]["user"] as? String, let comment = comments[indexPath.row]["comment"] as? String {
+            cell.textLabel?.numberOfLines = 2
+            cell.textLabel?.text = "\(user) \n\(comment)"
+        }
         return cell
     }
 
 
     @IBAction func shareButton(_ sender: Any) {
         
-        guard let email = Auth.auth().currentUser?.email  else {return}
+        guard let email = Auth.auth().currentUser?.email else {return}
+        
         if postCommentText.text != "" && postID != "" {
-            
+            let newComment = Comment(text: self.postCommentText.text!, user: email)
+
             firestoreDatabase.collection("Post").document(postID).getDocument { document, error in
                 if error == nil {
                     if let document = document, document.exists {
-                        self.commentPost = document.data()?["PostComment"] as? [String] ?? []
-                        self.commentPost.append(self.postCommentText.text!)
-//                        self.commentBy.append(email)
+                        self.commentPost = document.data()?["PostComment"] as? [[String: Any]] ?? []
+                        
+                        let commentData : [String: Any] = [
+                            "comment" : newComment.text,
+                            "user": newComment.user
+                        ]
+                        self.commentPost.append(commentData)
+                        
                         if let postComment = ["PostComment": self.commentPost] as? [String : Any] {
                             self.firestoreDatabase.collection("Post").document(self.postID).setData(postComment, merge: true)
                         }
-                        
+                        self.comments = self.commentPost
+                        self.tableView.reloadData()
+                    } else {
+                        print("no document")
                     }
-                    self.comments = self.commentPost
-                    self.tableView.reloadData()
+                    
+                } else {
+                    print("document could not fetched")
                 }
+                
             }
-            
-            
         } else {
-            errorMessage(title: "Error!", message: "Comment cannot be empty!")
+            self.errorMessage(title: "Error!", message: "Comment cannot be empty!")
         }
-        
-        
     }
     
 

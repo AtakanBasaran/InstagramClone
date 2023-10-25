@@ -116,53 +116,59 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
     }
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-
         picker.dismiss(animated: true, completion: nil)
-        ButtonUpload.isEnabled = true
-
-        let dispatchGroup = DispatchGroup()
         
+        if results.count == 0 {
+            ButtonUpload.isEnabled = false
+        } else {
+            
+            ButtonUpload.isEnabled = true
 
-        imageArray.removeAll(keepingCapacity: false)
-        inputSources.removeAll(keepingCapacity: false)
-        
-        for result in results {
-            dispatchGroup.enter()
+            let dispatchGroup = DispatchGroup()
+            
 
-            result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
-                defer {
-                    dispatchGroup.leave()
-                }
+            imageArray.removeAll(keepingCapacity: false)
+            inputSources.removeAll(keepingCapacity: false)
+            
+            for result in results {
+                dispatchGroup.enter()
 
-                if let error = error {
-                    self.ErrorMessage(titleIn: "Error!", messageIn: error.localizedDescription)
-                } else {
-                    if let image = object as? UIImage {
-                        self.imageArray.append(image)
-                        let inputSource = ImageSource(image: image)
-                        self.inputSources.append(inputSource)
+                result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
+                    defer {
+                        dispatchGroup.leave()
+                    }
+
+                    if let error = error {
+                        self.ErrorMessage(titleIn: "Error!", messageIn: error.localizedDescription)
+                    } else {
+                        if let image = object as? UIImage {
+                            self.imageArray.append(image)
+                            let inputSource = ImageSource(image: image)
+                            self.inputSources.append(inputSource)
+                        }
                     }
                 }
             }
+            dispatchGroup.notify(queue: DispatchQueue.main) {
+                // This block will be called when all asynchronous tasks are completed
+
+                let imageSlideShow = ImageSlideshow(frame: CGRect(x: self.view.frame.width * 0.5 - self.view.frame.width * 0.35, y: self.view.frame.height * 0.08, width: self.view.frame.width * 0.7, height: self.view.frame.height * 0.3))
+                imageSlideShow.backgroundColor = UIColor.white
+
+                let pageIndicator = UIPageControl()
+                pageIndicator.currentPageIndicatorTintColor = UIColor.lightGray
+                pageIndicator.pageIndicatorTintColor = UIColor.black
+                imageSlideShow.pageIndicator = pageIndicator
+                
+                
+                imageSlideShow.contentScaleMode = UIViewContentMode.scaleAspectFit
+                imageSlideShow.setImageInputs(self.inputSources)
+                self.view.addSubview(imageSlideShow)
+                
+            }
+            
         }
-
-        dispatchGroup.notify(queue: DispatchQueue.main) {
-            // This block will be called when all asynchronous tasks are completed
-
-            let imageSlideShow = ImageSlideshow(frame: CGRect(x: self.view.frame.width * 0.5 - self.view.frame.width * 0.35, y: self.view.frame.height * 0.08, width: self.view.frame.width * 0.7, height: self.view.frame.height * 0.3))
-            imageSlideShow.backgroundColor = UIColor.white
-
-            let pageIndicator = UIPageControl()
-            pageIndicator.currentPageIndicatorTintColor = UIColor.lightGray
-            pageIndicator.pageIndicatorTintColor = UIColor.black
-            imageSlideShow.pageIndicator = pageIndicator
-            
-            
-            imageSlideShow.contentScaleMode = UIViewContentMode.scaleAspectFit
-            imageSlideShow.setImageInputs(self.inputSources)
-            self.view.addSubview(imageSlideShow)
-            
-        }
+        
     }
     
     
