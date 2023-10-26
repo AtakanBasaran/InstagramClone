@@ -115,7 +115,7 @@ class FeedCell: UITableViewCell { //Prototype cell for table view
         
         fireStoreDatabase.collection("Post").document(documentIdLabel.text!).delete { error in
             if error != nil {
-                print("Error")
+                print(error?.localizedDescription ?? "Error!")
             }
         }
     }

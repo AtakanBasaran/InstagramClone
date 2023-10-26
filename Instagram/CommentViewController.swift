@@ -84,7 +84,7 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-
+    //posting comments
     @IBAction func shareButton(_ sender: Any) {
         
         guard let email = Auth.auth().currentUser?.email else {return}
