@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController {
         
         do {
             try Auth.auth().signOut()
-            performSegue(withIdentifier: "toVC", sender: nil) //return sign in page
+            performSegue(withIdentifier: "toVC", sender: nil) //return sign page
         } catch {
             print("Error!")
         }

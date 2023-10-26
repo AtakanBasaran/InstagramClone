@@ -43,7 +43,7 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         if let user = comments[indexPath.row]["user"] as? String, let comment = comments[indexPath.row]["comment"] as? String {
-            cell.textLabel?.numberOfLines = 2
+            cell.textLabel?.numberOfLines = 3
             
             let featureText = NSMutableAttributedString(string: "\(user) \n\(comment)")
             featureText.addAttributes([.font: UIFont.boldSystemFont(ofSize: 15)], range: NSRange(location: 0, length: user.count))
@@ -52,20 +52,38 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    //Comments that belong to the current user can be deleted
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-            if let user = comments[indexPath.row]["user"] as? String {
-                if user == Auth.auth().currentUser?.email! {
-                    if editingStyle == .delete {
-                        tableView.deleteRows(at: [indexPath], with: .fade)
-                    }
-                    
-                }
-            }
-            
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
+            self?.handleDeleteAction(at: indexPath)
+            completionHandler(true)
+        }
+        guard let user = comments[indexPath.row]["user"] as? String else {return nil}
         
+        if user == Auth.auth().currentUser?.email {
+            return UISwipeActionsConfiguration(actions: [deleteAction])
+        } else {
+            return nil
+        }
     }
-
+    
+    
+    private func handleDeleteAction(at indexPath: IndexPath) {
+        
+        guard let user = comments[indexPath.row]["user"] as? String, let comment = comments[indexPath.row]["comment"] as? String else {return}
+        
+        firestoreDatabase.collection("Post").document(postID).updateData(["PostComment": FieldValue.arrayRemove([["comment": comment, "user": user]])]) { [weak self] error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                self?.comments.remove(at: indexPath.row)
+                self?.tableView.deleteRows(at: [indexPath], with: .fade)
+                self?.tableView.reloadData()
+            }
+        }
+    }
+    
 
     @IBAction func shareButton(_ sender: Any) {
         
@@ -88,8 +106,9 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
                         if let postComment = ["PostComment": self.commentPost] as? [String : Any] {
                             self.firestoreDatabase.collection("Post").document(self.postID).setData(postComment, merge: true)
                         }
-                        self.comments = self.commentPost 
+                        self.comments = self.commentPost //instant refreshing in the page
                         self.tableView.reloadData()
+                        self.postCommentText.text = ""
                     } else {
                         print("no document")
                     }
@@ -104,9 +123,6 @@ class CommentViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    
-    
-
     
     func errorMessage(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
