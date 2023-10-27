@@ -33,10 +33,21 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         TableView.dataSource = self
         TableView.separatorColor = .purple
         firebaseGetData()
-        
         overrideUserInterfaceStyle = .light
+        
+        let header = UIView(frame: CGRect(x: 0, y: 10, width: view.frame.size.width, height: 50))
+        header.backgroundColor = .white
+        
+        let label = UILabel(frame: header.bounds)
+        label.text = "Instagram"
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 26)
+        label.textColor = .purple
+        header.addSubview(label)
+        
+        TableView.tableHeaderView = header
     }
-    
+
     
     //fetching post data from firebase
     func firebaseGetData(){
@@ -167,9 +178,5 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 333 // Set a fixed height for post cell
     }
-
-
-    
-    
 
 }
