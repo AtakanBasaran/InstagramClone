@@ -38,7 +38,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-    
+    //fetching post data from firebase
     func firebaseGetData(){
             
         firestoreDatabase.collection("Post").order(by: "Date", descending: true)
@@ -49,7 +49,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             } else {
                 if snapShot?.isEmpty != true && snapShot != nil {
                     
-                    //to not showing same posts more than 1
+                    //to not show same posts more than 1
                     self.postSeries.removeAll(keepingCapacity: false)
                     self.documentIDs.removeAll(keepingCapacity: false)
                     self.inputArray.removeAll(keepingCapacity: false)

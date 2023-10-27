@@ -69,7 +69,6 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
 
         dispatchGroup.notify(queue: DispatchQueue.main) {
             // This block will be called when all asynchronous tasks are completed
-            print(self.imageUrlArray.count)
 
             // Continue with Firestore upload
             self.uploadToFirestore()
@@ -96,13 +95,6 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
     }
 
     
-    func ErrorMessage(titleIn: String, messageIn: String) {
-        let alert = UIAlertController(title: titleIn, message: messageIn, preferredStyle: UIAlertController.Style.alert)
-        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okButton)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     @IBAction func selectImageButton(_ sender: Any) {
         
         var config = PHPickerConfiguration()
@@ -126,7 +118,7 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
 
             let dispatchGroup = DispatchGroup()
             
-
+            
             imageArray.removeAll(keepingCapacity: false) //for not to upload last photos together with new photos
             inputSources.removeAll(keepingCapacity: false)
             
@@ -172,16 +164,12 @@ class UploadViewController: UIViewController, PHPickerViewControllerDelegate{
         
     }
     
-    
-    
-    
-
-
-
-
-    
-  
-   
+    func ErrorMessage(titleIn: String, messageIn: String) {
+        let alert = UIAlertController(title: titleIn, message: messageIn, preferredStyle: UIAlertController.Style.alert)
+        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okButton)
+        self.present(alert, animated: true, completion: nil)
+    }
     
     
 }
